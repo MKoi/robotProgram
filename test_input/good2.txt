@@ -1,0 +1,11 @@
+# this is comment
+MOVE N
+MOVE E
+MOVE S
+MOVE W
+# this is another comment
+SHOOT N
+SHOOT E
+SHOOT S
+SHOOT W
+END
