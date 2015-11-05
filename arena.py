@@ -50,15 +50,18 @@ class Arena:
 		if dir == 'NORTH':
 			endx, endy = orig.x, orig.y + maxrange
 			starty += 1
-		if dir == 'EAST':
+		elif dir == 'EAST':
 			endx, endy = orig.x + maxrange, orig.y
 			startx += 1
-		if dir == 'SOUTH':
+		elif dir == 'SOUTH':
 			endx, endy = orig.x, orig.y - maxrange
 			starty -= 1
-		if dir == 'WEST':
+		elif dir == 'WEST':
 			endx, endy = orig.x - maxrange, orig.y
 			startx -= 1
+		clamped, startx, starty = self.clamptoarea(startx, starty)
+		if clamped:
+			return Block()
 		clamped, endx, endy = self.clamptoarea(endx, endy)
 		objects = [self.objectinline(p, startx, starty, endx, endy) for p in self.players]
 		for o in objects:
