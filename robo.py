@@ -6,6 +6,10 @@ import roboparse
 import robot
 import arena
 
+def printprogtable(p):
+	for key, data in p.items():
+		print('{} : {}'.format(key, data))
+
 
 w = 4
 h = 4
@@ -18,6 +22,7 @@ while i < len(sys.argv):
 	data = open(filename).read()
 	if data:
 		prog = roboparse.parse(data)
+		printprogtable(prog)
 		if prog:
 			valid, x, y = a.freepos()
 			if valid:

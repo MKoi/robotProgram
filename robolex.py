@@ -13,7 +13,8 @@ reserved = {
 	'S' : 'SOUTH',
 	'E' : 'EAST',
 	'W' : 'WEST',
-	'END' : 'END'
+	'END' : 'END',
+	'BLOCK' : 'BLOCK'
 }
 
 

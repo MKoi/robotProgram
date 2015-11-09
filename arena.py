@@ -3,12 +3,15 @@ from random import randint
 class Block:
 	def reducehp(self, val):
 		print("block takes damage")
+	def typestr(self):
+		return 'BLOCK'
 
 class Arena:
-	def __init__(self, height, width):
+	def __init__(self, height, width, debug=0):
 		self.height = height
 		self.width = width
 		self.players = []
+		self.debug = debug
 		
 	def freepos(self):
 		x, y = randint(0, self.width-1), randint(0, self.height-1)
@@ -31,7 +34,7 @@ class Arena:
 	
 	def objectinline(self, obj, x1, y1, x2, y2):
 		if obj.x >= x1 and obj.x <= x2 and obj.y >= y1 and obj.y <= y2:
-			print("%d,%d is in line. test from %d,%d to %d,%d" % (obj.x, obj.y, x1, y1, x2, y2))
+			if self.debug: print("%d,%d is in line. test from %d,%d to %d,%d" % (obj.x, obj.y, x1, y1, x2, y2))
 			return obj
 		else:
 			return None

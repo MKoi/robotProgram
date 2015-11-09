@@ -33,6 +33,9 @@ class Robot:
 		print("player %d takes damage" % self.playernum)
 		self.hp -= val
 	
+	def typestr(self):
+		return 'ROBOT'
+	
 	def programended(self):
 		return self.opcode()[0] == 'END'
 	
@@ -50,27 +53,27 @@ class Robot:
 		if etype == 'SHOOT':
 			self.shoot(expr[1])
 		if etype == 'IF':
-			print "wtf"
 			relop = expr[1]
 			newline = expr[2]
-			if self.releval(relop):
+			if not self.releval(relop):
+				print "goto " + str(newline)
 				self.goto(newline)
 
 	# evaluate relational expression
 	def releval(self,expr):
-		etype = expr[1]
+		etype = expr[0]
 		if etype == 'DIR':
-			target = arena.raycast(self, expr[3], 10)
-			if target: 
-				return True
-			else:
-				return False
+			target = self.arena.raycast(self, expr[1], 10)
+			typestr = target.typestr()
+			if typestr == 'ROBOT':
+				typestr = 'ENEMY'
+			return typestr == expr[2]
 		elif etype == 'DIRNOT':
-			target = arena.raycast(self, expr[3], 10)
-			if target: 
-				return False
-			else:
-				return True
+			target = self.arena.raycast(self, expr[1], 10)
+			typestr = target.typestr()
+			if typestr == 'ROBOT':
+				typestr = 'ENEMY'
+			return typestr != expr[2]
 		else:
 			print "error in rel eval"
 
@@ -81,26 +84,16 @@ class Robot:
 			
 	# runs through program
 	def run(self):  		
-		while 1:
-			instr = self.opcode()
-			op = instr[0]
-
-			# END and STOP statements
-			if op == 'END':
-				break           # We're done
-			else:
-				self.eval(instr)
-				
-			self.pc += 1
+		while not self.programended():
+			self.step()
 			
 		print("program ended")
 		
 	# executes single operation
 	def step(self):
 		instr = self.opcode()
-		op = instr[0]
-		if op != 'END':
-			self.eval(instr)
+		self.eval(instr)
+		if instr[0] != 'END':		
 			self.pc += 1
 
 	def reportstatus(self):

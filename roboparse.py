@@ -34,6 +34,22 @@ def p_statements(p):
 			line,stats = p[2]
 			p[0][line] = stats	
 
+def p_statements_if(p):
+	'''statements : IF relexpr NEWLINE statements ENDIF
+							| statements IF relexpr NEWLINE statements ENDIF'''
+	if len(p) == 6:
+		p[0] = p[4]
+		if not p[0]: p[0] = { }
+		p[0][p.lineno(1)] = ('IF',p[2],p.lineno(5),)
+		p[0][p.lineno(5)] = ('NOP',)
+		
+	elif len(p) == 7:
+		p[0] = p[5]
+		if not p[0]: p[0] = { }
+		p[0][p.lineno(2)] = ('IF',p[3],p.lineno(6),)
+		p[0][p.lineno(6)] = ('NOP',)
+		p[0].update(p[1])
+
 
 def p_statement(p):
 	'''statement : command NEWLINE'''
@@ -67,9 +83,7 @@ def p_command_shoot(p):
 	'''command : SHOOT direction'''
 	p[0] = ('SHOOT', p[2])
 
-def p_command_if(p):
-	'''command : IF relexpr NEWLINE statements ENDIF'''
-	p[0] = ('IF',p[2],p.lineno(5))
+
 
 
 def p_command_end(p):
@@ -104,9 +118,13 @@ def p_relexpr_dir_neg(p):
 	'''relexpr : object IS NOT direction'''
 	p[0] = ('DIRNOT',p[4],p[1])
 
-def p_object(p):
+def p_object_enemy(p):
 	'''object : ENEMY'''
 	p[0] = 'ENEMY'
+
+def p_object_block(p):
+	'''object : BLOCK'''
+	p[0] = 'BLOCK'
 
 #### Catastrophic error handler
 def p_error(p):
@@ -117,6 +135,7 @@ roboparser = yacc.yacc()
 
 def parse(data,debug=0):
     roboparser.error = 0
+    robolex.lexer.lineno = 1
     p = roboparser.parse(data,debug=debug)
     if roboparser.error: return None
     return p
