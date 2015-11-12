@@ -35,21 +35,48 @@ def p_statements(p):
 			p[0][line] = stats	
 
 def p_statements_if(p):
-	'''statements : IF relexpr NEWLINE statements ENDIF
-							| statements IF relexpr NEWLINE statements ENDIF'''
+	'''statements : IF relexpr_or NEWLINE statements ENDIF
+							| statements IF relexpr_or NEWLINE statements ENDIF'''
 	if len(p) == 6:
-		p[0] = p[4]
-		if not p[0]: p[0] = { }
-		p[0][p.lineno(1)] = ('IF',p[2],p.lineno(5),)
-		p[0][p.lineno(5)] = ('NOP',)
-		
+		ifindex, innerindex, exprindex, endindex = 1,4,2,5
 	elif len(p) == 7:
-		p[0] = p[5]
-		if not p[0]: p[0] = { }
-		p[0][p.lineno(2)] = ('IF',p[3],p.lineno(6),)
-		p[0][p.lineno(6)] = ('NOP',)
+		ifindex, innerindex, exprindex, endindex = 2,5,3,6
+	p[0] = p[innerindex]
+	if not p[0]: p[0] = { }
+	p[0][p.lineno(ifindex)] = ('IF',p[exprindex],p.lineno(endindex)+1,)
+	if len(p) == 7:
 		p[0].update(p[1])
 
+def p_statements_while(p):
+	'''statements : WHILE relexpr_or NEWLINE statements ENDWHILE
+							| statements WHILE relexpr_or NEWLINE statements ENDWHILE'''
+	if len(p) == 6:
+		ifindex, innerindex, exprindex, endindex = 1,4,2,5
+	elif len(p) == 7:
+		ifindex, innerindex, exprindex, endindex = 2,5,3,6
+	p[0] = p[innerindex]
+	if not p[0]: p[0] = { }
+	p[0][p.lineno(ifindex)] = ('IF',p[exprindex],p.lineno(endindex)+1,)
+	p[0][p.lineno(endindex)] = ('GOTO', p.lineno(ifindex),)
+	if len(p) == 7:
+		p[0].update(p[1])
+
+def p_statements_loop(p):
+	'''statements : LOOP NEWLINE statements ENDLOOP
+							| statements LOOP NEWLINE statements ENDLOOP'''
+	
+	if len(p) == 5:
+		comindex, innerindex, endindex = 1,3,4
+	elif len(p) == 6:
+		comindex, innerindex, endindex = 2,4,5
+	p[0] = p[innerindex]
+	if not p[0]: p[0] = { }
+	p[0][p.lineno(comindex)] = ('NOP',)
+	p[0][p.lineno(endindex)] = ('GOTO', p.lineno(comindex),)
+	if len(p) == 6:
+		p[0].update(p[1])
+	
+	
 
 def p_statement(p):
 	'''statement : command NEWLINE'''
@@ -73,6 +100,8 @@ def p_statement_newline(p):
 	'''statement : NEWLINE'''
 	p[0] = None
 
+def p_statement_empty(p):
+	'''statement : '''
 
 #### commands
 def p_command_move(p):
@@ -107,20 +136,68 @@ def p_dir_west(p):
 	'''direction : WEST'''
 	p[0] = 'WEST'
 
+def p_adv_direction(p):
+	'''adv_direction : SOMEWHERE direction
+									| DIRECTLY direction
+									| direction'''
+	if p[1] == 'SOMEWHERE':
+		p[0] = p[2] + 'ISH'
+	elif p[1] == 'DIRECTLY':
+		p[0] = p[2]
+	else:
+		p[0] = p[1]
+
+
+def p_relexpr_or(p):
+	'''relexpr_or : relexpr_or OR relexpr_and
+								| relexpr_and'''
+	if len(p) == 4:
+		p[0] = ('OR', p[1], p[3])
+	elif len(p) == 2:
+		p[0] = p[1]
+
+
+def p_relexpr_and(p):
+	'''relexpr_and : relexpr_and AND relexpr
+								| relexpr'''
+	if len(p) == 4:
+		p[0] = ('AND', p[1], p[3])
+	elif len(p) == 2:
+		p[0] = p[1]
 
 
 def p_relexpr_dir(p):
-	'''relexpr : object IS direction'''
+	'''relexpr : ENEMY IS adv_direction'''
 	p[0] = ('DIR',p[3],p[1])
 
 	
 def p_relexpr_dir_neg(p):
-	'''relexpr : object IS NOT direction'''
+	'''relexpr : ENEMY IS NOT adv_direction'''
 	p[0] = ('DIRNOT',p[4],p[1])
+
+
+def p_relexpr_range(p):
+	'''relexpr : ENEMY IS WITHIN distance
+						| MYROBOT IS WITHIN ENEMY RANGE'''
+	p[0] = ('RANGE',p[1],p[4])
+
+	
+def p_relexpr_range_neg(p):
+	'''relexpr : ENEMY IS NOT WITHIN distance
+						| MYROBOT IS NOT WITHIN ENEMY RANGE'''
+	p[0] = ('RANGENOT',p[5],p[1])
+
+
+def p_distance(p):
+	'''distance : RANGE
+							| NUM BLOCK'''
+	p[0] = p[1]
+
 
 def p_object_enemy(p):
 	'''object : ENEMY'''
 	p[0] = 'ENEMY'
+
 
 def p_object_block(p):
 	'''object : BLOCK'''

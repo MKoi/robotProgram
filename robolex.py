@@ -5,9 +5,20 @@ reserved = {
 	'MOVE' : 'MOVE',
 	'SHOOT' : 'SHOOT',
 	'IF' : 'IF',
+	'AND' : 'AND',
+	'OR' : 'OR',
 	'ENDIF' : 'ENDIF',
+	'WHILE' : 'WHILE',
+	'ENDWHILE' : 'ENDWHILE',
+	'LOOP' : 'LOOP',
+	'ENDLOOP' : 'ENDLOOP',
+	'SOMEWHERE' : 'SOMEWHERE',
+	'DIRECTLY' : 'DIRECTLY',
 	'IS' : 'IS',
 	'ENEMY' : 'ENEMY',
+	'MYROBOT' : 'MYROBOT',
+	'RANGE' : 'RANGE',
+	'WITHIN' : 'WITHIN',
 	'NOT' : 'NOT',		
 	'N' : 'NORTH',
 	'S' : 'SOUTH',
@@ -19,7 +30,7 @@ reserved = {
 
 
 tokens = [
-	'COMMAND','COMMENT','NEWLINE',
+	'COMMAND','COMMENT','NEWLINE','NUM'
 ] + list(reserved.values())
 
 
@@ -32,10 +43,19 @@ def t_COMMAND(t):
 	t.type = reserved.get(t.value)
 	if t.type is not None:
 		return t
+
+def t_NUM(t):
+	r'[0-9]+'
+	try:
+		t.value = int(t.value)
+	except ValueError:
+		print("Integer value too large %d", t.value)
+		t.value = 0
+	return t
 	
 
 def t_NEWLINE(t):
-	r'\n'
+	r'\n+'
 	t.lexer.lineno += 1
 	return t
 

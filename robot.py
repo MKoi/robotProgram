@@ -8,6 +8,7 @@ class Robot:
 		self.y = y
 		self.arena = arena
 		self.hp = 10
+		self.weaponrange = 5
 		self.lines = list(self.prog)
 		self.lines.sort()
 		self.pc = 0
@@ -25,7 +26,7 @@ class Robot:
 	
 	def shoot(self, dir):
 		print("player %d shoot %s" % (self.playernum, dir))
-		target = self.arena.raycast(self, dir, 10)
+		target = self.arena.raycast(self, dir, self.weaponrange)
 		if target:
 			target.reducehp(1)
 	
@@ -50,30 +51,38 @@ class Robot:
 		etype = expr[0]
 		if etype == 'MOVE':
 			self.move(expr[1])
-		if etype == 'SHOOT':
+			self.pc += 1
+		elif etype == 'SHOOT':
 			self.shoot(expr[1])
-		if etype == 'IF':
+			self.pc += 1
+		elif etype == 'IF':
 			relop = expr[1]
 			newline = expr[2]
 			if not self.releval(relop):
-				print "goto " + str(newline)
 				self.goto(newline)
+			else:
+				self.pc += 1
+		elif etype == 'GOTO':
+			self.goto(expr[1])
+		elif etype == 'NOP':
+			self.pc += 1
 
 	# evaluate relational expression
 	def releval(self,expr):
 		etype = expr[0]
-		if etype == 'DIR':
+		if etype == 'OR':
+			return self.releval(expr[1]) or self.releval(expr[2])
+		elif etype == 'AND':
+			return self.releval(expr[1]) and self.releval(expr[2])
+		elif etype == 'DIR' or etype == 'DIRNOT':
 			target = self.arena.raycast(self, expr[1], 10)
 			typestr = target.typestr()
 			if typestr == 'ROBOT':
 				typestr = 'ENEMY'
-			return typestr == expr[2]
-		elif etype == 'DIRNOT':
-			target = self.arena.raycast(self, expr[1], 10)
-			typestr = target.typestr()
-			if typestr == 'ROBOT':
-				typestr = 'ENEMY'
-			return typestr != expr[2]
+			if etype == 'DIR':
+				return typestr == expr[2]
+			else:
+				return typestr != expr[2]
 		else:
 			print "error in rel eval"
 
@@ -93,8 +102,6 @@ class Robot:
 	def step(self):
 		instr = self.opcode()
 		self.eval(instr)
-		if instr[0] != 'END':		
-			self.pc += 1
 
 	def reportstatus(self):
 		print("player %d pos:%d,%d hp:%d" % (self.playernum, self.x, self.y, self.hp))

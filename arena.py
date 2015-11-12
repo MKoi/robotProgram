@@ -32,9 +32,11 @@ class Arena:
 		return (x < self.width and x >= 0 and y < self.height and y >= 0)
 			
 	
-	def objectinline(self, obj, x1, y1, x2, y2):
-		if obj.x >= x1 and obj.x <= x2 and obj.y >= y1 and obj.y <= y2:
-			if self.debug: print("%d,%d is in line. test from %d,%d to %d,%d" % (obj.x, obj.y, x1, y1, x2, y2))
+	def objectinarea(self, obj, x1, y1, x2, y2):
+		minx, miny = min(x1, x2), min(y1, y2)
+		maxx, maxy = max(x1, x2), max(y1, y2)
+		if obj.x >= minx and obj.x <= maxx and obj.y >= miny and obj.y <= maxy:
+			if self.debug: print("%d,%d in area from %d,%d to %d,%d" % (obj.x, obj.y, minx, miny, maxx, maxy))
 			return obj
 		else:
 			return None
@@ -48,26 +50,32 @@ class Arena:
 				
 	
 	def raycast(self, orig, dir, maxrange = 10):
-		endx, endy = 0, 0
+		beamlength = maxrange
+		if dir[-3:] == 'ISH':
+			beamwidth = maxrange / 2
+			dir = dir[:-3]
+		else:
+			beamwidth = 0
+		endx, endy = orig.x, orig.y
 		startx, starty = orig.x, orig.y
 		if dir == 'NORTH':
-			endx, endy = orig.x, orig.y + maxrange
-			starty += 1
+			endx, endy = orig.x + beamwidth, orig.y + beamlength
+			startx, starty = orig.x - beamwidth, orig.y + 1
 		elif dir == 'EAST':
-			endx, endy = orig.x + maxrange, orig.y
-			startx += 1
+			endx, endy = orig.x + beamlength, orig.y + beamwidth
+			startx, starty = orig.x + 1, orig.y - beamwidth
 		elif dir == 'SOUTH':
-			endx, endy = orig.x, orig.y - maxrange
-			starty -= 1
+			endx, endy = orig.x + beamwidth, orig.y - beamlength
+			startx, starty = orig.x - beamwidth, orig.y - 1
 		elif dir == 'WEST':
-			endx, endy = orig.x - maxrange, orig.y
-			startx -= 1
-		clamped, startx, starty = self.clamptoarea(startx, starty)
-		if clamped:
-			return Block()
-		clamped, endx, endy = self.clamptoarea(endx, endy)
-		objects = [self.objectinline(p, startx, starty, endx, endy) for p in self.players]
+			endx, endy = orig.x - beamlength, orig.y + beamwidth
+			startx, starty = orig.x - 1, orig.y - beamwidth
+		else:
+			return None
+		clampedstart, startx, starty = self.clamptoarea(startx, starty)
+		clampedend, endx, endy = self.clamptoarea(endx, endy)
+		objects = [self.objectinarea(p, startx, starty, endx, endy) for p in self.players]
 		for o in objects:
-			if o: return o
-		if clamped:
+			if o and o != orig: return o
+		if clampedstart or clampedend:
 			return Block()

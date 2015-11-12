@@ -7,12 +7,13 @@ import robot
 import arena
 
 def printprogtable(p):
-	for key, data in p.items():
-		print('{} : {}'.format(key, data))
+	if p:
+		for key, data in p.items():
+			print('{} : {}'.format(key, data))
 
 
-w = 4
-h = 4
+w = 8
+h = 8
 a = arena.Arena(h,w)
 i = 1
 players = []
@@ -32,7 +33,8 @@ while i < len(sys.argv):
 	i += 1
 
 try:
-	while 1:
+	maxcycles = 30
+	for cycle in range(1,maxcycles):
 		for p in players:
 			p.step()
 			p.reportstatus()
