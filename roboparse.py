@@ -167,23 +167,23 @@ def p_relexpr_and(p):
 
 
 def p_relexpr_dir(p):
-	'''relexpr : ENEMY IS adv_direction'''
+	'''relexpr : object_plain IS adv_direction'''
 	p[0] = ('DIR',p[3],p[1])
 
 	
 def p_relexpr_dir_neg(p):
-	'''relexpr : ENEMY IS NOT adv_direction'''
+	'''relexpr : object_plain IS NOT adv_direction'''
 	p[0] = ('DIRNOT',p[4],p[1])
 
 
 def p_relexpr_range(p):
-	'''relexpr : ENEMY IS WITHIN distance
+	'''relexpr : object_spec IS WITHIN distance
 						| MYROBOT IS WITHIN ENEMY RANGE'''
 	p[0] = ('RANGE',p[1],p[4])
 
 	
 def p_relexpr_range_neg(p):
-	'''relexpr : ENEMY IS NOT WITHIN distance
+	'''relexpr : object_spec IS NOT WITHIN distance
 						| MYROBOT IS NOT WITHIN ENEMY RANGE'''
 	p[0] = ('RANGENOT',p[5],p[1])
 
@@ -193,26 +193,35 @@ def p_distance(p):
 							| NUM BLOCK'''
 	p[0] = p[1]
 
+def p_object_plain(p):
+	'''object_plain : ENEMY
+						| BLOCK'''
+	p[0] = p[1]
 
-def p_object_enemy(p):
-	'''object : ENEMY'''
-	p[0] = 'ENEMY'
+def p_object_spec(p):
+	'''object_spec : object_plain IN adv_direction'''
+	p[0] = p[1] + '_' + p[3]
 
-
-def p_object_block(p):
-	'''object : BLOCK'''
-	p[0] = 'BLOCK'
 
 #### Catastrophic error handler
 def p_error(p):
 	if not p:
 		print("SYNTAX ERROR AT EOF")
 
-roboparser = yacc.yacc()
+lexer = None
+roboparser = None
+
+def init(debug=0):
+	global lexer, roboparser
+	lexer = lex.lex(module=robolex, debug=debug)
+	roboparser = yacc.yacc()
+	
 
 def parse(data,debug=0):
-    roboparser.error = 0
-    robolex.lexer.lineno = 1
-    p = roboparser.parse(data,debug=debug)
-    if roboparser.error: return None
-    return p
+	if not lexer or not roboparser:
+		return None
+	roboparser.error = 0
+	lexer.lineno = 1
+	p = roboparser.parse(data, debug=debug, lexer=lexer)
+	if roboparser.error: return None
+	return p

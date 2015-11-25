@@ -1,4 +1,6 @@
 from random import randint
+import math
+import sys
 
 class Block:
 	def reducehp(self, val):
@@ -20,6 +22,82 @@ class Arena:
 			x, y = randint(0, self.width-1), randint(0, self.height-1)
 			i += 1
 		return (i < 10), x, y
+	
+	def distance(self, A, B):
+		dx = (A.x-B.x)
+		dy = (A.y-B.y)
+		return int(math.sqrt(dx**2 + dy**2))
+
+	def getnearest(self, orig, others=None):
+		if not others:
+			others = self.players
+		mindist = sys.maxsize
+		nearest = None
+		for p in others:
+			if p and p != orig:
+				dist = self.distance(orig, p)
+				if dist < mindist:
+					mindist = dist
+					nearest = p
+		return nearest
+
+	def isadjacent(self, A, B):
+		return abs(A.x - B.x) <= 1 and abs(A.y - B.y) <= 1
+
+	def lineofsigth(self, A, B):
+		if self.isadjacent(A, B):
+			return True
+		points = self.line(A, B)
+		return all(self.emptypos(p[0], p[1]) for p in points[1:-1])
+			
+
+	def line(self, A, B):
+		# Bresenham's Line Algorithm
+
+		# Setup initial conditions
+		x1, y1 = A.x, A.y
+		x2, y2 = B.x, B.y
+		dx = x2 - x1
+		dy = y2 - y1
+		
+		# Determine how steep the line is
+		is_steep = abs(dy) > abs(dx)
+		
+		# Rotate line
+		if is_steep:
+			x1, y1 = y1, x1
+			x2, y2 = y2, x2
+		
+		# Swap start and end points if necessary and store swap state
+		swapped = False
+		if x1 > x2:
+			x1, x2 = x2, x1
+			y1, y2 = y2, y1
+			swapped = True
+		
+		# Recalculate differentials
+		dx = x2 - x1
+		dy = y2 - y1
+		
+		# Calculate error
+		error = int(dx / 2.0)
+		ystep = 1 if y1 < y2 else -1
+		
+		# Iterate over bounding box generating points between start and end
+		y = y1
+		points = []
+		for x in range(x1, x2 + 1):
+			coord = (y, x) if is_steep else (x, y)
+			points.append(coord)
+			error -= abs(dy)
+			if error < 0:
+			  y += ystep
+			  error += dx
+		
+		# Reverse the list if the coordinates were swapped
+		if swapped:
+			points.reverse()
+		return points
 		
 	def addplayer(self, player):
 		if self.isinside(player.x, player.y) and self.emptypos(player.x, player.y):
@@ -49,7 +127,7 @@ class Arena:
 		return (newx != x or newy != y), newx, newy
 				
 	
-	def raycast(self, orig, dir, maxrange = 10):
+	def objectindir(self, orig, dir, maxrange = 10):
 		beamlength = maxrange
 		if dir[-3:] == 'ISH':
 			beamwidth = maxrange / 2
@@ -75,7 +153,9 @@ class Arena:
 		clampedstart, startx, starty = self.clamptoarea(startx, starty)
 		clampedend, endx, endy = self.clamptoarea(endx, endy)
 		objects = [self.objectinarea(p, startx, starty, endx, endy) for p in self.players]
-		for o in objects:
-			if o and o != orig: return o
-		if clampedstart or clampedend:
+		nearest = self.getnearest(orig, objects)
+		if nearest:
+			return nearest
+		elif clampedstart or clampedend:
 			return Block()
+		return None

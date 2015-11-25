@@ -5,9 +5,9 @@ _tabversion = '3.5'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'C60B3CD40590F86F4BB8A1EBA6302F10'
+_lr_signature = 'A15D9806199003147A2F98B3EF5D7B13'
     
-_lr_action_items = {'SHOOT':([0,4,7,9,17,18,21,29,31,32,35,36,38,],[2,-10,-5,2,-8,-9,-4,2,2,2,2,-6,-7,]),'ENEMY':([10,22,],[23,23,]),'NEWLINE':([0,3,4,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,24,28,29,31,32,33,35,36,37,38,],[4,-13,-10,17,-5,18,4,-11,-15,-17,-16,-14,-12,-8,-9,27,18,-4,29,31,4,4,4,-18,4,-6,-19,-7,]),'END':([0,4,7,9,17,18,21,29,31,32,35,36,38,],[3,-10,-5,19,-8,-9,-4,3,3,3,3,-6,-7,]),'WEST':([1,2,30,34,],[13,13,13,13,]),'IS':([23,25,26,],[-20,30,-21,]),'MOVE':([0,4,7,9,17,18,21,29,31,32,35,36,38,],[1,-10,-5,1,-8,-9,-4,1,1,1,1,-6,-7,]),'BLOCK':([10,22,],[26,26,]),'error':([0,4,7,9,17,18,21,29,31,32,35,36,38,],[8,-10,-5,20,-8,-9,-4,20,20,20,20,-6,-7,]),'NOT':([30,],[34,]),'NORTH':([1,2,30,34,],[12,12,12,12,]),'ENDIF':([4,7,17,18,21,32,35,36,38,],[-10,-5,-8,-9,-4,36,38,-6,-7,]),'EAST':([1,2,30,34,],[14,14,14,14,]),'$end':([5,8,19,27,],[0,-3,-1,-2,]),'SOUTH':([1,2,30,34,],[15,15,15,15,]),'IF':([0,4,7,9,17,18,21,29,31,32,35,36,38,],[10,-10,-5,22,-8,-9,-4,10,10,22,22,-6,-7,]),}
+_lr_action_items = {'SHOOT':([0,4,8,10,27,28,32,35,42,46,48,49,61,63,64,65,66,67,77,78,79,80,81,86,87,],[1,-14,-5,1,-12,-13,-4,1,1,1,1,1,1,1,1,1,-10,1,-8,1,-11,1,-6,-9,-7,]),'MOVE':([0,4,8,10,27,28,32,35,42,46,48,49,61,63,64,65,66,67,77,78,79,80,81,86,87,],[2,-14,-5,2,-12,-13,-4,2,2,2,2,2,2,2,2,2,-10,2,-8,2,-11,2,-6,-9,-7,]),'WHILE':([0,4,8,10,27,28,32,35,42,46,48,49,61,63,64,65,66,67,77,78,79,80,81,86,87,],[5,-14,-5,31,-12,-13,-4,5,5,5,31,5,31,5,31,5,-10,31,-8,31,-11,31,-6,-9,-7,]),'DIRECTLY':([37,38,54,],[53,53,53,]),'BLOCK':([5,12,31,34,41,43,76,],[26,26,26,26,26,26,85,]),'NORTH':([1,2,37,38,52,53,54,],[14,14,14,14,14,14,14,]),'IN':([20,21,26,],[-38,38,-39,]),'NEWLINE':([0,3,4,7,8,9,10,11,13,14,15,16,17,18,19,24,25,27,28,29,30,32,33,35,36,42,45,46,47,48,49,50,51,60,61,62,63,64,65,66,67,68,69,70,74,75,77,78,79,80,81,82,84,85,86,87,88,],[4,-18,-14,27,-5,28,4,35,-17,-20,-22,-21,-19,-16,-29,-27,42,-12,-13,28,44,-4,46,4,49,4,63,4,65,4,4,-25,-30,-28,4,-26,4,4,4,-10,4,-23,-24,-31,-32,-36,-8,4,-11,4,-6,-33,-34,-37,-9,-7,-35,]),'NUM':([59,73,],[76,76,]),'SOUTH':([1,2,37,38,52,53,54,],[17,17,17,17,17,17,17,]),'EAST':([1,2,37,38,52,53,54,],[16,16,16,16,16,16,16,]),'MYROBOT':([5,12,31,34,41,43,],[22,22,22,22,22,22,]),'$end':([6,9,30,44,],[0,-3,-1,-2,]),'ENEMY':([5,12,31,34,41,43,56,72,],[20,20,20,20,20,20,71,83,]),'WITHIN':([39,40,57,58,],[56,59,72,73,]),'END':([0,4,8,10,27,28,32,35,42,46,48,49,61,63,64,65,66,67,77,78,79,80,81,86,87,],[3,-14,-5,30,-12,-13,-4,3,3,3,3,3,3,3,3,3,-10,3,-8,3,-11,3,-6,-9,-7,]),'SOMEWHERE':([37,38,54,],[52,52,52,]),'IS':([14,15,16,17,20,21,22,23,26,50,55,68,69,],[-20,-22,-21,-19,-38,37,39,40,-39,-25,-40,-23,-24,]),'RANGE':([59,71,73,83,],[75,82,75,88,]),'ENDIF':([4,8,27,28,32,49,65,66,67,77,79,80,81,86,87,],[-14,-5,-12,-13,-4,-15,-15,-10,81,-8,-11,87,-6,-9,-7,]),'ENDLOOP':([4,8,27,28,32,35,46,48,64,66,77,79,81,86,87,],[-14,-5,-12,-13,-4,-15,-15,66,79,-10,-8,-11,-6,-9,-7,]),'IF':([0,4,8,10,27,28,32,35,42,46,48,49,61,63,64,65,66,67,77,78,79,80,81,86,87,],[12,-14,-5,34,-12,-13,-4,12,12,12,34,12,34,12,34,12,-10,34,-8,34,-11,34,-6,-9,-7,]),'AND':([14,15,16,17,19,24,50,51,60,62,68,69,70,74,75,82,84,85,88,],[-20,-22,-21,-19,-29,41,-25,-30,-28,41,-23,-24,-31,-32,-36,-33,-34,-37,-35,]),'ENDWHILE':([4,8,27,28,32,42,61,63,66,77,78,79,81,86,87,],[-14,-5,-12,-13,-4,-15,77,-15,-10,-8,86,-11,-6,-9,-7,]),'WEST':([1,2,37,38,52,53,54,],[15,15,15,15,15,15,15,]),'error':([0,4,8,10,27,28,32,35,42,46,48,49,61,63,64,65,66,67,77,78,79,80,81,86,87,],[9,-14,-5,29,-12,-13,-4,29,29,29,29,29,29,29,29,29,-10,29,-8,29,-11,29,-6,-9,-7,]),'NOT':([37,39,40,],[54,57,58,]),'OR':([14,15,16,17,19,24,25,36,45,47,50,51,60,62,68,69,70,74,75,82,84,85,88,],[-20,-22,-21,-19,-29,-27,43,43,43,43,-25,-30,-28,-26,-23,-24,-31,-32,-36,-33,-34,-37,-35,]),'LOOP':([0,4,8,10,27,28,32,35,42,46,48,49,61,63,64,65,66,67,77,78,79,80,81,86,87,],[11,-14,-5,33,-12,-13,-4,11,11,11,33,11,33,11,33,11,-10,33,-8,33,-11,33,-6,-9,-7,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'direction':([1,2,30,34,],[11,16,33,37,]),'relexpr':([10,22,],[24,28,]),'statements':([0,29,31,],[9,32,35,]),'object':([10,22,],[25,25,]),'program':([0,],[5,]),'command':([0,9,29,31,32,35,],[6,6,6,6,6,6,]),'statement':([0,9,29,31,32,35,],[7,21,7,7,21,21,]),}
+_lr_goto_items = {'distance':([59,73,],[74,84,]),'direction':([1,2,37,38,52,53,54,],[13,18,50,50,68,69,50,]),'relexpr':([5,12,31,34,41,43,],[19,19,19,19,60,19,]),'statements':([0,35,42,46,49,63,65,],[10,48,61,64,67,78,80,]),'object_plain':([5,12,31,34,41,43,],[21,21,21,21,21,21,]),'relexpr_and':([5,12,31,34,43,],[24,24,24,24,62,]),'adv_direction':([37,38,54,],[51,55,70,]),'program':([0,],[6,]),'command':([0,10,35,42,46,48,49,61,63,64,65,67,78,80,],[7,7,7,7,7,7,7,7,7,7,7,7,7,7,]),'statement':([0,10,35,42,46,48,49,61,63,64,65,67,78,80,],[8,32,8,8,8,32,8,32,8,32,8,32,32,32,]),'object_spec':([5,12,31,34,41,43,],[23,23,23,23,23,23,]),'relexpr_or':([5,12,31,34,],[25,36,45,47,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -31,20 +31,39 @@ _lr_productions = [
   ('program -> error','program',1,'p_program_error','roboparse.py',19),
   ('statements -> statements statement','statements',2,'p_statements','roboparse.py',24),
   ('statements -> statement','statements',1,'p_statements','roboparse.py',25),
-  ('statements -> IF relexpr NEWLINE statements ENDIF','statements',5,'p_statements_if','roboparse.py',38),
-  ('statements -> statements IF relexpr NEWLINE statements ENDIF','statements',6,'p_statements_if','roboparse.py',39),
-  ('statement -> command NEWLINE','statement',2,'p_statement','roboparse.py',54),
-  ('statement -> error NEWLINE','statement',2,'p_statement_bad','roboparse.py',64),
-  ('statement -> NEWLINE','statement',1,'p_statement_newline','roboparse.py',72),
-  ('command -> MOVE direction','command',2,'p_command_move','roboparse.py',78),
-  ('command -> SHOOT direction','command',2,'p_command_shoot','roboparse.py',82),
-  ('command -> END','command',1,'p_command_end','roboparse.py',89),
-  ('direction -> SOUTH','direction',1,'p_dir_south','roboparse.py',94),
-  ('direction -> NORTH','direction',1,'p_dir_north','roboparse.py',98),
-  ('direction -> EAST','direction',1,'p_dir_east','roboparse.py',102),
-  ('direction -> WEST','direction',1,'p_dir_west','roboparse.py',106),
-  ('relexpr -> object IS direction','relexpr',3,'p_relexpr_dir','roboparse.py',112),
-  ('relexpr -> object IS NOT direction','relexpr',4,'p_relexpr_dir_neg','roboparse.py',117),
-  ('object -> ENEMY','object',1,'p_object_enemy','roboparse.py',121),
-  ('object -> BLOCK','object',1,'p_object_block','roboparse.py',125),
+  ('statements -> IF relexpr_or NEWLINE statements ENDIF','statements',5,'p_statements_if','roboparse.py',38),
+  ('statements -> statements IF relexpr_or NEWLINE statements ENDIF','statements',6,'p_statements_if','roboparse.py',39),
+  ('statements -> WHILE relexpr_or NEWLINE statements ENDWHILE','statements',5,'p_statements_while','roboparse.py',51),
+  ('statements -> statements WHILE relexpr_or NEWLINE statements ENDWHILE','statements',6,'p_statements_while','roboparse.py',52),
+  ('statements -> LOOP NEWLINE statements ENDLOOP','statements',4,'p_statements_loop','roboparse.py',65),
+  ('statements -> statements LOOP NEWLINE statements ENDLOOP','statements',5,'p_statements_loop','roboparse.py',66),
+  ('statement -> command NEWLINE','statement',2,'p_statement','roboparse.py',82),
+  ('statement -> error NEWLINE','statement',2,'p_statement_bad','roboparse.py',92),
+  ('statement -> NEWLINE','statement',1,'p_statement_newline','roboparse.py',100),
+  ('statement -> <empty>','statement',0,'p_statement_empty','roboparse.py',104),
+  ('command -> MOVE direction','command',2,'p_command_move','roboparse.py',108),
+  ('command -> SHOOT direction','command',2,'p_command_shoot','roboparse.py',112),
+  ('command -> END','command',1,'p_command_end','roboparse.py',119),
+  ('direction -> SOUTH','direction',1,'p_dir_south','roboparse.py',124),
+  ('direction -> NORTH','direction',1,'p_dir_north','roboparse.py',128),
+  ('direction -> EAST','direction',1,'p_dir_east','roboparse.py',132),
+  ('direction -> WEST','direction',1,'p_dir_west','roboparse.py',136),
+  ('adv_direction -> SOMEWHERE direction','adv_direction',2,'p_adv_direction','roboparse.py',140),
+  ('adv_direction -> DIRECTLY direction','adv_direction',2,'p_adv_direction','roboparse.py',141),
+  ('adv_direction -> direction','adv_direction',1,'p_adv_direction','roboparse.py',142),
+  ('relexpr_or -> relexpr_or OR relexpr_and','relexpr_or',3,'p_relexpr_or','roboparse.py',152),
+  ('relexpr_or -> relexpr_and','relexpr_or',1,'p_relexpr_or','roboparse.py',153),
+  ('relexpr_and -> relexpr_and AND relexpr','relexpr_and',3,'p_relexpr_and','roboparse.py',161),
+  ('relexpr_and -> relexpr','relexpr_and',1,'p_relexpr_and','roboparse.py',162),
+  ('relexpr -> object_plain IS adv_direction','relexpr',3,'p_relexpr_dir','roboparse.py',170),
+  ('relexpr -> object_plain IS NOT adv_direction','relexpr',4,'p_relexpr_dir_neg','roboparse.py',175),
+  ('relexpr -> object_spec IS WITHIN distance','relexpr',4,'p_relexpr_range','roboparse.py',180),
+  ('relexpr -> MYROBOT IS WITHIN ENEMY RANGE','relexpr',5,'p_relexpr_range','roboparse.py',181),
+  ('relexpr -> object_spec IS NOT WITHIN distance','relexpr',5,'p_relexpr_range_neg','roboparse.py',186),
+  ('relexpr -> MYROBOT IS NOT WITHIN ENEMY RANGE','relexpr',6,'p_relexpr_range_neg','roboparse.py',187),
+  ('distance -> RANGE','distance',1,'p_distance','roboparse.py',192),
+  ('distance -> NUM BLOCK','distance',2,'p_distance','roboparse.py',193),
+  ('object_plain -> ENEMY','object_plain',1,'p_object_plain','roboparse.py',197),
+  ('object_plain -> BLOCK','object_plain',1,'p_object_plain','roboparse.py',198),
+  ('object_spec -> object_plain IN adv_direction','object_spec',3,'p_object_spec','roboparse.py',202),
 ]
