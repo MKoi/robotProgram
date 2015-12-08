@@ -1,4 +1,6 @@
 import os, sys
+import math
+import itertools 
 import pygame
 from pygame.locals import *
 
@@ -35,19 +37,26 @@ class Roboicon(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.image, self.rect = load_image('robo_r.png', -1)
 		self.rect.topleft = grid_to_screen(x, y)
-		self.gridx = x
-		self.gridy = y
-		self.to_gridx = x
-		self.to_gridy = x
-		self.move = 0, 0
+		self.targetx = self.rect.topleft[0]
+		self.targety = self.rect.topleft[1]
+		self.targettime = 0.0
 
-	def move(self, x, y targettime):
-		target_x, target_y = grid_to_screen(x, y)
-		
-		pixels_per_frame = 1.0 / float(targetfps)
+	def move(self, x, y, targettime):
+		self.targetx, self.targety = grid_to_screen(x, y)
+		self.targettime = targettime
 		
 
 	def update(self, dt):
+		if self.targettime <= 0.0:
+			self.rect.topleft = self.targetx, self.targety
+			print 'move complete'
+			return
+		
+		ratio = min(1.0, float(dt) / float(self.targettime))
+		dx = ratio * (self.targetx - self.rect.topleft[0])
+		dy = ratio * (self.targety - self.rect.topleft[1])
+		self.rect.move_ip(round(dx), round(dy))
+		self.targettime -= dt
 		
 	
 
@@ -64,10 +73,14 @@ background.fill((0, 0, 0))
 screen.blit(background, (0, 0))
 pygame.display.flip()
 
-p1icon = Roboicon()
+path = [(1,2),(2,2),(2,3),(1,3)]
+nextinpath = itertools.cycle(path)
+nextpos = next(nextinpath)
+p1icon = Roboicon(nextpos[0], nextpos[1])
 allsprites = pygame.sprite.RenderPlain((p1icon))
 clock = pygame.time.Clock()
 exitgame = False
+totaltime = 0.0
 while not exitgame:
 	dt = clock.tick(targetfps)
 	for event in pygame.event.get():
@@ -77,6 +90,10 @@ while not exitgame:
 			exitgame = True
 	
 	allsprites.update(dt)
+	if math.ceil(totaltime/1000.0) < math.ceil((totaltime + dt)/1000.0):
+		nextpos = next(nextinpath)
+		p1icon.move(nextpos[0], nextpos[1], 1000)
+	totaltime += dt
 	screen.blit(background, (0, 0))
 	allsprites.draw(screen)
 	pygame.display.flip()
