@@ -43,8 +43,6 @@ a = arena.Arena(h,w)
 players = []
 
 
-
-
 filenames = []
 for i in range(1,len(sys.argv)):
 	arg = sys.argv[i]
@@ -60,6 +58,7 @@ if profiler:
 	pr = cProfile.Profile()
 	
 startProfiler(pr)
+outputfile = open('trace.txt', 'w')
 roboparse.init(debug)
 for i in range(0,len(filenames)):
 	data = open(filenames[i]).read()
@@ -69,7 +68,7 @@ for i in range(0,len(filenames)):
 		if prog:
 			valid, x, y = a.freepos()
 			if valid:
-				r = robot.Robot(prog, i, x, y, a, getcycletime(i), Fraction(0))
+				r = robot.Robot(prog, i, x, y, a, getcycletime(i), Fraction(0), outputfile)
 				players.append(r)
 				a.addplayer(r)
 stopProfiler(pr)
@@ -85,6 +84,7 @@ try:
 	currenttime = Fraction(0)
 	while currenttime < maxtime:
 		print float(currenttime)
+		outputfile.write('t:{0};\n'.format(robot.to_ms(currenttime)))
 		for p in players:
 			p.step(currenttime)
 			p.reportstatus()
@@ -94,3 +94,4 @@ try:
 except RuntimeError:
 	pass
 stopProfiler(pr)
+outputfile.close()

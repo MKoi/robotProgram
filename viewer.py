@@ -7,13 +7,13 @@ import pygame
 from pygame.locals import *
 
 pixels_per_grid = 32
-grid_maxx = 8
+grid_maxx = 7
 grid_maxy = grid_maxx
 targetfps = 60
 screen_width = 480
 screen_height = 800
-arena_width = grid_maxx * pixels_per_grid
-arena_height = grid_maxy * pixels_per_grid
+arena_width = (grid_maxx + 1) * pixels_per_grid
+arena_height = (grid_maxy + 1) * pixels_per_grid
 arena_x = 0.5 * (screen_width - arena_width)
 arena_y = 0.5 * (screen_height - arena_height)
 arena_border = 8

@@ -1,7 +1,10 @@
 from fractions import Fraction
 
+def to_ms(frac):
+	return int(1000*float(frac))
+
 class Robot:
-	def __init__(self, prog, playernum, x, y, arena, cycletime, readytime):
+	def __init__(self, prog, playernum, x, y, arena, cycletime, readytime, logfile):
 		self.prog = prog
 		self.playernum = playernum
 		self.x = x
@@ -14,6 +17,9 @@ class Robot:
 		self.pc = 0
 		self.cycletime = cycletime
 		self.readytime = readytime
+		self.logfile = logfile
+		self.logfile.write('p{0}p:{1},{2};\np{0}t:robot;\n'.format(self.playernum, self.x, self.y))
+		
 	
 	def move(self, dir):
 		if not self.arena.objectindir(self, dir, 1):
@@ -25,12 +31,14 @@ class Robot:
 				self.y -= 1
 			if dir == 'WEST':
 				self.x -= 1
+			self.logfile.write('p{0}m:{1},{2}:{3};\n'.format(self.playernum, self.x, self.y, to_ms(self.cycletime)))
 	
 	def shoot(self, dir):
 		print("player %d shoot %s" % (self.playernum, dir))
 		target = self.arena.objectindir(self, dir, self.weaponrange)
 		if target:
 			target.reducehp(1)
+			self.logfile.write('p{0}s:{1},{2}:{3};\n'.format(self.playernum, target.x, target.y, 300))
 	
 	def reducehp(self, val):
 		print("player %d takes damage" % self.playernum)
